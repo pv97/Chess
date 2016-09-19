@@ -1,4 +1,5 @@
-require_relative 'piece'
+require_relative 'sliding_pieces'
+require_relative 'stepping_pieces'
 
 class Board
 
@@ -23,9 +24,9 @@ class Board
     @grid[row][col] = val
   end
 
-  
+
 end
 
 b = Board.new
-b[0,0] = Rook.new([0,0],b,:white)
+b[0,0] = Knight.new([0,0],b,:white)
 p b[0,0].moves
