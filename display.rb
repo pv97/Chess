@@ -37,5 +37,4 @@ while true
   d.cursor.get_input
   p d.cursor.cursor_pos
   d.render
-
 end

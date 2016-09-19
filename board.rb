@@ -2,7 +2,7 @@ require_relative 'piece'
 
 class Board
 
-  attr_reader :grid
+  attr_accessor :grid
 
   def initialize
     @grid = Array.new(8) { Array.new(8) {NullPiece.instance} }
@@ -23,5 +23,9 @@ class Board
     @grid[row][col] = val
   end
 
-
+  
 end
+
+b = Board.new
+b[0,0] = Rook.new([0,0],b,:white)
+p b[0,0].moves
