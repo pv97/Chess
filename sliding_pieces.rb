@@ -8,10 +8,6 @@ class SlidingPiece < Piece
     super
   end
 
-  def enemy?(pos)
-    @color != @board[*pos].color
-  end
-
   def moves(directions)
     valid_moves = []
 
@@ -26,7 +22,8 @@ class SlidingPiece < Piece
       end
     end
 
-    valid_moves
+    valid_moves.reject { |move| move_into_check?(move) }
+
   end
 end
 
