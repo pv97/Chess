@@ -77,9 +77,28 @@ class Board
   end
 
   def checkmate?(color)
-    king_pos = find_king(color)
-    moves = self[*king_pos].moves(false) << king_pos
-    return moves.all? { |move| in_check?(color, move) }
+    possible_moves = []
+    @grid.each_with_index do |row,i|
+      row.each_with_index do |piece,j|
+        unless piece == NullPiece.instance || piece.color != color
+          possible_moves += piece.moves(true)
+        end
+      end
+    end
+
+    p "poss: #{possible_moves}"
+    possible_moves.empty?
+
+    # king_pos = find_king(color)
+    # moves = self[*king_pos].moves(false) << king_pos
+    # return moves.all? { |move| in_check?(color, move) }
+  end
+
+  def convert_pawn
+    (0..7).each do |i|
+      self[0,i] = Queen.new([0,i],self,:white) if self[0,i].is_a? Pawn
+      self[7,i] = Queen.new([7,i],self,:white) if self[0,i].is_a? Pawn
+    end
   end
 
   def deep_dup

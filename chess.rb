@@ -21,10 +21,11 @@ class Game
   def play_turn
     start_pos, end_pos = @current_player.get_move
     @board.move(start_pos, end_pos)
+    @board.convert_pawn
   end
 
   def play
-    until @board.checkmate?(:white) || @board.checkmate?(:blue)
+    until @board.checkmate?(@current_player.color)
       play_turn
       swap_players
     end
@@ -62,10 +63,48 @@ class HumanPlayer
     until move_pos && valid_moves.include?(move_pos)
       move_pos = get_input("#{name}, select a spot to move to",pos)
     end
+
     [pos,move_pos]
   end
 end
 
-one = HumanPlayer.new("one")
-two = HumanPlayer.new("two")
+class ComputerPlayer
+  attr_accessor :name, :color,  :display
+
+  def initialize(name)
+    @name = "Computer"
+  end
+
+  def get_move
+    enemy_pos = []
+    friendly_pos = []
+    @display.board.grid.each_with_index do |row,i|
+      row.each_with_index do |piece,j|
+        unless piece == NullPiece.instance
+          friendly_pos << [i,j] if piece.color == @color
+          enemy_pos << [i,j] unless piece.color == @color
+        end
+      end
+    end
+
+    possible_moves = Hash.new() {|h,v| h[v]=[] }
+    friendly_pos.each do |pos|
+      @display.board[*pos].moves(true).each do |move|
+        possible_moves[pos] << move
+        return [pos,move] if enemy_pos.include?(move)
+      end
+    end
+
+    pos_sample = possible_moves.keys.sample
+    move_sample = possible_moves[pos_sample].sample
+
+    @display.render(nil)
+
+    [pos_sample,move_sample]
+
+  end
+end
+
+one = ComputerPlayer.new("one")
+two = ComputerPlayer.new("two")
 g = Game.new(one,two).play
