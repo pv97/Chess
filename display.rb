@@ -10,11 +10,13 @@ class Display
     @cursor = Cursor.new([0,0],@board)
   end
 
-  def render
+  def render(highlight_pos)
     @board.grid.each_with_index do |row, i|
       row_string = ""
       row.each_with_index do |piece, j|
-        if [i,j] == @cursor.cursor_pos
+        if [i,j] == highlight_pos
+          row_string << " #{piece.to_s} ".yellow
+        elsif [i,j] == @cursor.cursor_pos
           row_string << " #{piece.to_s} ".red
         elsif piece == NullPiece.instance
           row_string << " #{piece.to_s} "

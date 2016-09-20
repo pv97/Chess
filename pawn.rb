@@ -4,6 +4,7 @@ class Pawn < Piece
   def initialize(pos,board,color)
     super
     @moved = false
+    @sym = @color == :white ? "\u2659".encode('utf-8') : "\u265F".encode('utf-8')
   end
 
   def add_vector(vec1,vec2)
@@ -16,7 +17,11 @@ class Pawn < Piece
     [x,y]
   end
 
-  def moves
+  def to_s
+    "P"
+  end
+
+  def moves(moving)
     valid_moves = []
 
     front = add_vector(@pos,[1,0])
@@ -36,6 +41,6 @@ class Pawn < Piece
       end
     end
 
-    valid_moves
+    moving ? valid_moves.reject { |move| move_into_check?(move) } : valid_moves
   end
 end

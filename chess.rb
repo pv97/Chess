@@ -40,11 +40,11 @@ class HumanPlayer
     @name = name
   end
 
-  def get_input(message)
+  def get_input(message,highlight_pos=nil)
     input = nil
     while input.nil?
       puts message
-      @display.render
+      @display.render(highlight_pos)
       input = @display.cursor.get_input
     end
     input
@@ -53,14 +53,14 @@ class HumanPlayer
   def get_move
     pos = nil
     piece = nil
-    until pos && piece != NullPiece.instance && piece.color == @color && !piece.moves.empty?
+    until pos && piece != NullPiece.instance && piece.color == @color && !piece.moves(true).empty?
       pos = get_input("#{name}, select a piece to move")
       piece = @display.board[*pos]
     end
     move_pos = nil
-    valid_moves = piece.moves
+    valid_moves = piece.moves(true)
     until move_pos && valid_moves.include?(move_pos)
-      move_pos = get_input("#{name}, select a spot to move to")
+      move_pos = get_input("#{name}, select a spot to move to",pos)
     end
     [pos,move_pos]
   end

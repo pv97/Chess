@@ -69,7 +69,7 @@ class Board
     @grid.each_with_index do |row, i|
       row.each_with_index do |piece, j|
         if piece != NullPiece.instance && piece.color != colorr
-          return true if piece.moves.include?(pos)
+          return true if piece.moves(false).include?(pos)
         end
       end
     end
@@ -78,8 +78,7 @@ class Board
 
   def checkmate?(color)
     king_pos = find_king(color)
-    moves = self[*king_pos].moves << king_pos
-    p "#{moves} moves"
+    moves = self[*king_pos].moves(false) << king_pos
     return moves.all? { |move| in_check?(color, move) }
   end
 

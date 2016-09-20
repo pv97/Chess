@@ -5,7 +5,7 @@ class SteppingPiece < Piece
     super
   end
 
-  def moves(directions)
+  def moves(directions,moving)
     valid_moves = []
 
     directions.each do |dir|
@@ -14,7 +14,7 @@ class SteppingPiece < Piece
         valid_moves << current
       end
     end
-    valid_moves
+    moving ? valid_moves.reject { |move| move_into_check?(move) } : valid_moves
   end
 
 end
@@ -24,10 +24,12 @@ class King < SteppingPiece
 
   def initialize(pos,board,color)
     super
+    @sym = @color == :white ? "\u2654".encode('utf-8') : "\u265B".encode('utf-8')
+
   end
 
-  def moves
-    super(DIRECTIONS)
+  def moves(moving)
+    super(DIRECTIONS,moving)
   end
 
   def to_s
@@ -40,10 +42,11 @@ class Knight < SteppingPiece
                 [1,2], [1, -2], [-1, 2], [-1,-2]]
   def initialize(pos,board,color)
     super
+    @sym = @color == :white ? "\u2658".encode('utf-8') : "\u265E".encode('utf-8')
   end
 
-  def moves
-    super(DIRECTIONS)
+  def moves(moving)
+    super(DIRECTIONS,moving)
   end
 
   def to_s

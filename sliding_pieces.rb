@@ -8,7 +8,7 @@ class SlidingPiece < Piece
     super
   end
 
-  def moves(directions)
+  def moves(directions,moving)
     valid_moves = []
 
     directions.each do |dir|
@@ -22,17 +22,18 @@ class SlidingPiece < Piece
       end
     end
 
-    valid_moves.reject { |move| move_into_check?(move) }
+    moving ? valid_moves.reject { |move| move_into_check?(move) } : valid_moves
   end
 end
 
 class Bishop < SlidingPiece
   def initialize(pos,board,color)
     super
+    @sym = @color == :white ? "\u2657".encode('utf-8') : "\u265D".encode('utf-8')
   end
 
-  def moves
-    super(DIAGONALS)
+  def moves(moving)
+    super(DIAGONALS,moving)
   end
 
   def to_s
@@ -43,10 +44,11 @@ end
 class Rook < SlidingPiece
   def initialize(pos,board,color)
     super
+    @sym = @color == :white ? "\u2656".encode('utf-8') : "\u265C".encode('utf-8')
   end
 
-  def moves
-    super(HORIZONTALS)
+  def moves(moving)
+    super(HORIZONTALS,moving)
   end
 
   def to_s
@@ -57,10 +59,11 @@ end
 class Queen < SlidingPiece
   def initialize(pos,board,color)
     super
+    @sym = @color == :white ? "\u2655".encode('utf-8') : "\u265B".encode('utf-8')
   end
 
-  def moves
-    super(DIAGONALS+HORIZONTALS)
+  def moves(moving)
+    super(DIAGONALS+HORIZONTALS,moving)
   end
 
   def to_s
