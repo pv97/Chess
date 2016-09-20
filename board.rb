@@ -89,7 +89,6 @@ class Board
       end
     end
 
-    p "poss: #{possible_moves}"
     possible_moves.empty?
 
     # king_pos = find_king(color)
