@@ -76,6 +76,7 @@ class Cursor
   end
 
   def handle_key(key)
+    system("clear")
     if MOVES.include?(key)
       update_pos(MOVES[key])
     elsif key == :return

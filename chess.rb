@@ -22,6 +22,7 @@ class Game
     start_pos, end_pos = @current_player.get_move
     @board.move(start_pos, end_pos)
     @board.convert_pawn
+    system("clear")
   end
 
   def play
@@ -106,6 +107,6 @@ class ComputerPlayer
   end
 end
 
-one = ComputerPlayer.new("one")
+one = HumanPlayer.new("one")
 two = ComputerPlayer.new("two")
 g = Game.new(one,two).play

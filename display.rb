@@ -14,15 +14,17 @@ class Display
     @board.grid.each_with_index do |row, i|
       row_string = ""
       row.each_with_index do |piece, j|
+        tile = ""
         if [i,j] == highlight_pos
-          row_string << " #{piece.to_s} ".yellow
-        elsif [i,j] == @cursor.cursor_pos
-          row_string << " #{piece.to_s} ".red
+          tile = " #{piece.to_s} ".yellow
         elsif piece == NullPiece.instance
-          row_string << " #{piece.to_s} "
+          tile = " #{piece.to_s} "
         else
-          row_string << " #{piece.to_s} ".colorize(piece.color)
+          tile = " #{piece.to_s} ".colorize(piece.color)
         end
+        back_ground = (i+j)%2 == 0 ? :yellow : :green
+        back_ground = :red if [i,j] == @cursor.cursor_pos
+        row_string << tile.colorize(:background => back_ground)
       end
       puts row_string
     end

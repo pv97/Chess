@@ -44,6 +44,6 @@ class NullPiece
   include Singleton
 
   def to_s
-    "_"
+    " "
   end
 end
