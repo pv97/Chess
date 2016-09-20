@@ -23,7 +23,6 @@ class SlidingPiece < Piece
     end
 
     valid_moves.reject { |move| move_into_check?(move) }
-
   end
 end
 
@@ -35,6 +34,10 @@ class Bishop < SlidingPiece
   def moves
     super(DIAGONALS)
   end
+
+  def to_s
+    "B"
+  end
 end
 
 class Rook < SlidingPiece
@@ -45,6 +48,10 @@ class Rook < SlidingPiece
   def moves
     super(HORIZONTALS)
   end
+
+  def to_s
+    "R"
+  end
 end
 
 class Queen < SlidingPiece
@@ -54,5 +61,9 @@ class Queen < SlidingPiece
 
   def moves
     super(DIAGONALS+HORIZONTALS)
+  end
+
+  def to_s
+    "Q"
   end
 end

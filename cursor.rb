@@ -78,9 +78,12 @@ class Cursor
   def handle_key(key)
     if MOVES.include?(key)
       update_pos(MOVES[key])
+    elsif key == :return
+      return @cursor_pos.dup
     else
       raise "ERROR"
     end
+    nil
   end
 #TODO check inbounds
 

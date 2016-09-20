@@ -30,6 +30,9 @@ class King < SteppingPiece
     super(DIRECTIONS)
   end
 
+  def to_s
+    "K"
+  end
 end
 
 class Knight < SteppingPiece
@@ -43,4 +46,7 @@ class Knight < SteppingPiece
     super(DIRECTIONS)
   end
 
+  def to_s
+    "N"
+  end
 end

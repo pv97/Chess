@@ -8,11 +8,39 @@ class Board
 
   def initialize
     @grid = Array.new(8) { Array.new(8) {NullPiece.instance} }
+    populate
+  end
+
+  def populate
+    (0..7).each do |i|
+      self[1,i] = Pawn.new([1,i],self,:blue)
+      self[6,i] = Pawn.new([6,i],self,:white)
+    end
+
+    [0,7].each do |i|
+      self[0,i] = Rook.new([0,i],self,:blue)
+      self[7,i] = Rook.new([7,i],self,:white)
+    end
+
+    [1,6].each do |i|
+      self[0,i] = Knight.new([0,i],self,:blue)
+      self[7,i] = Knight.new([7,i],self,:white)
+    end
+
+    [2,5].each do |i|
+      self[0,i] = Bishop.new([0,i],self,:blue)
+      self[7,i] = Bishop.new([7,i],self,:white)
+    end
+
+    self[0,4] = King.new([0,4],self,:blue)
+    self[7,4] = King.new([7,4],self,:white)
+
+    self[0,3] = Queen.new([0,3],self,:blue)
+    self[7,3] = Queen.new([7,3],self,:white)
   end
 
   def move(start_pos, end_pos)
     raise "No piece at start_pos" if self[*start_pos] == NullPiece.instance
-    # raise "Invalid move" unless valid_move?(start_pos,end_pos)
     self[*start_pos].pos = end_pos
     self[*end_pos] = self[*start_pos]
     self[*start_pos] = NullPiece.instance
@@ -36,11 +64,11 @@ class Board
     end
   end
 
-  def in_check?(color, pos=nil)
-    pos ||= find_king(color)
+  def in_check?(colorr, pos=nil)
+    pos ||= find_king(colorr)
     @grid.each_with_index do |row, i|
       row.each_with_index do |piece, j|
-        if piece != NullPiece.instance && piece.color == !color
+        if piece != NullPiece.instance && piece.color != colorr
           return true if piece.moves.include?(pos)
         end
       end
@@ -50,8 +78,9 @@ class Board
 
   def checkmate?(color)
     king_pos = find_king(color)
-    moves = self[*king_pos].moves
-    return moves.all? { |move|in_check?(color, move) }
+    moves = self[*king_pos].moves << king_pos
+    p "#{moves} moves"
+    return moves.all? { |move| in_check?(color, move) }
   end
 
   def deep_dup
@@ -68,8 +97,8 @@ class Board
     copy
   end
 end
-
-b = Board.new
-b[0,0] = Queen.new([0,0],b,:white)
-b[4,4] = King.new([4,4],b,:white)
-p b[0,0].moves
+#
+# b = Board.new
+# b[0,0] = Queen.new([0,0],b,:white)
+# b[4,4] = King.new([4,4],b,:white)
+# p b[0,0].moves
