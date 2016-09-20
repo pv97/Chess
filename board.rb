@@ -43,10 +43,13 @@ class Board
     raise "No piece at start_pos" if self[*start_pos] == NullPiece.instance
     self[*start_pos].pos = end_pos
     self[*end_pos] = self[*start_pos]
+    # self[*start_pos].moved = true if self[*end_pos].is_a?(Pawn)
     self[*start_pos] = NullPiece.instance
+    self[*end_pos].moved = true if self[*end_pos].is_a?(Pawn)
   end
 
   def [](row, col)
+    #p "row #{row}, col: #{col}"
     @grid[row][col]
   end
 
@@ -97,7 +100,7 @@ class Board
   def convert_pawn
     (0..7).each do |i|
       self[0,i] = Queen.new([0,i],self,:white) if self[0,i].is_a? Pawn
-      self[7,i] = Queen.new([7,i],self,:white) if self[0,i].is_a? Pawn
+      self[7,i] = Queen.new([7,i],self,:blue) if self[7,i].is_a? Pawn
     end
   end
 
@@ -109,6 +112,7 @@ class Board
           copy[i,j] = NullPiece.instance
         else
           copy[i,j] = piece.class.new([i,j],copy,piece.color)
+          copy[i,j].moved = true if piece.is_a?(Pawn) && piece.moved
         end
       end
     end

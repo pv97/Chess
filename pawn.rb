@@ -1,6 +1,9 @@
 require_relative 'piece'
 
 class Pawn < Piece
+
+  attr_accessor :moved
+
   def initialize(pos,board,color)
     super
     @moved = false
@@ -26,20 +29,22 @@ class Pawn < Piece
 
     front = add_vector(@pos,[1,0])
     if @board[*front] == NullPiece.instance
-      valid_moves << front
-
+      valid_moves << front if in_bounds?(front)
+      p "pawn moved? #{self.moved}"
       unless @moved
+        p "double"
         double = add_vector(@pos,[2,0])
         valid_moves << double if @board[*double] == NullPiece.instance
       end
     end
 
     [[1,-1],[1,1]].each do |dir|
-      current = add_vector(@pos,dir)
+      current = add_vector(@pos, dir)
       if in_bounds?(current) && @board[*current]!= NullPiece.instance
         valid_moves << current if enemy?(current)
       end
     end
+    # @moved = true if moving
 
     moving ? valid_moves.reject { |move| move_into_check?(move) } : valid_moves
   end

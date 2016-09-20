@@ -31,6 +31,7 @@ class Game
     end
     swap_players
     puts "#{@current_player.name} wins!"
+    @display.render(nil)
   end
 end
 
@@ -87,7 +88,7 @@ class ComputerPlayer
       end
     end
 
-    possible_moves = Hash.new() {|h,v| h[v]=[] }
+    possible_moves = Hash.new {|h,v| h[v]=[] }
     friendly_pos.each do |pos|
       @display.board[*pos].moves(true).each do |move|
         possible_moves[pos] << move
